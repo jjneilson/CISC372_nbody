@@ -33,8 +33,9 @@ void freeHostMemory()
 	free(hPos);
 	free(mass);
 }
+
 //planetFill: Fill the first NUMPLANETS+1 entries of the entity arrays with an estimation
-//                of our solar system (Sun+NUMPLANETS)
+//				of our solar system (Sun+NUMPLANETS)
 //Parameters: None
 //Returns: None
 //Fills the first 8 entries of our system with an estimation of the sun plus our 8 planets.
@@ -45,13 +46,14 @@ void planetFill(){
 		for (j=0;j<3;j++){
 			hPos[i][j]=data[i][j];
 			hVel[i][j]=data[i][j+3];
-			mass[i]=data[i][6];
 		}
+		mass[i]=data[i][6];
 	}
 }
+
 //randomFill: FIll the rest of the objects in the system randomly starting at some entry in the list
-//Parameters:     start: The index of the first open entry in our system (after planetFill).
-//                count: The number of random objects to put into our system
+//Parameters: 	start: The index of the first open entry in our system (after planetFill).
+//				count: The number of random objects to put into our system
 //Returns: None
 //Side Effects: Fills count entries in our system starting at index start (0 based)
 void randomFill(int start, int count)
@@ -68,10 +70,9 @@ void randomFill(int start, int count)
 	}
 }
 
-
 //printSystem: Prints out the entire system to the supplied file
-//Parameters:     handle: A handle to an open file with write access to prnt the data to
-//Returns:         none
+//Parameters: 	handle: A handle to an open file with write access to prnt the data to
+//Returns: 		none
 //Side Effects: Modifies the file handle by writing to it.
 void printSystem(FILE* handle){
 	int i,j;
@@ -79,12 +80,12 @@ void printSystem(FILE* handle){
 		fprintf(handle,"pos=(");
 		for (j=0;j<3;j++){
 			fprintf(handle,"%lf,",hPos[i][j]);
-			printf("),v=(");
-			for (j=0;j<3;j++){
-				fprintf(handle,"%lf,",hVel[i][j]);
-				fprintf(handle,"),m=%lf\n",mass[i]);
-			}
 		}
+		printf("),v=(");
+		for (j=0;j<3;j++){
+			fprintf(handle,"%lf,",hVel[i][j]);
+		}
+		fprintf(handle,"),m=%lf\n",mass[i]);
 	}
 }
 
@@ -103,11 +104,12 @@ int main(int argc, char **argv)
 	#endif
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
 		compute();
-		clock_t t1=clock()-t0;
-		#ifdef DEBUG
-		printSystem(stdout);
-		#endif
-		printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
-		freeHostMemory();
 	}
+	clock_t t1=clock()-t0;
+#ifdef DEBUG
+	printSystem(stdout);
+#endif
+	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
+
+	freeHostMemory();
 }
